@@ -1,22 +1,32 @@
 import { useState } from 'react';
-import client from './helpers/https';
+import { client } from '@helpers';
+import { Text, Button, Container } from '@components';
 
 function App() {
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   const handleAPICall = async (message = 'FE => BE') => {
-    const apiResponse = await client.get<any>(
-      `testing/formatMessage?payload=${message}`
-    );
-    setMessage(apiResponse?.data?.message || 'No message');
+    try {
+      const apiResponse = await client.get<any>(
+        `testing/formatMessage?payload=${message}`
+      );
+      setMessage(apiResponse?.data?.message || 'No message');
+    } catch (error: any) {
+      console.error(error);
+      setMessage(error?.message || 'Error calling API');
+    }
   };
 
   return (
-    <div>
-      <h1>Hello World</h1>
-      <button onClick={() => handleAPICall()}>Call API</button>
-      <p>Message: {message}</p>
-    </div>
+    <Container>
+      <Text variant="h2" color="primary">
+        Hello World
+      </Text>
+      <Button onClick={() => handleAPICall()} variant="outlined" size="small">
+        Call API
+      </Button>
+      <Text variant="body1">Message: {message}</Text>
+    </Container>
   );
 }
 
