@@ -23,7 +23,8 @@
       "@components": ["./src/components"],
       "@view": ["./src/view"],
       "@helpers": ["./src/helpers"]
-    }
+    },
+    "types": ["react", "react-dom", "react-router-dom"]
   },
   "include": ["src"],
   "references": []
