@@ -1,32 +1,37 @@
-import { useState } from 'react';
-import { client } from '@helpers';
-import { Text, Button, Container } from '@components';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Login, Game, GameRoom, TestApi } from './view/index';
 
 function App() {
-  const [message, setMessage] = useState<string | null>(null);
-
-  const handleAPICall = async (message = 'FE => BE') => {
-    try {
-      const apiResponse = await client.get<any>(
-        `testing/formatMessage?payload=${message}`
-      );
-      setMessage(apiResponse?.data?.message || 'No message');
-    } catch (error: any) {
-      console.error(error);
-      setMessage(error?.message || 'Error calling API');
-    }
-  };
-
   return (
-    <Container>
-      <Text variant="h2" color="primary">
-        Hello World
-      </Text>
-      <Button onClick={() => handleAPICall()} variant="outlined" size="small">
-        Call API
-      </Button>
-      <Text variant="body1">Message: {message}</Text>
-    </Container>
+    <Router>
+      <div>
+        {/* Navigation links */}
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/game">Game</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/test-api">Test API</Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Define Routes for different views */}
+        <Routes>
+          <Route path="/" element={<Game />} />
+          <Route path="/game" element={<GameRoom />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/test-api" element={<TestApi />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
