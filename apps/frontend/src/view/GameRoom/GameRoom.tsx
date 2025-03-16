@@ -1,67 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { client } from '@helpers';
-import { Text, Container, Button } from '@components';
-import { GameState } from '../../model/GameState';
+import { Button, Container, Text } from '@components';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/appContext';
+import { useEffect, useState } from 'react';
 
-const GameRoom: React.FC = () => {
-  const [gameState, setGameState] = useState<GameState | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+const GameRoom = () => {
+  const { setGameRoomId } = useAppContext();
+  const { roomId } = useParams();
+  const navigate = useNavigate();
+  const [roomStatus, setRoomStatus] = useState<any>(null);
+
+  console.log('GameRoomId', roomId);
+
+  const handleStartGame = async () => {
+    // TODO: API call to start the game
+    const mockStartGameResponse = 'success';
+
+    if (mockStartGameResponse === 'success') {
+      navigate(`/game/${roomId}`);
+    }
+  };
+
+  const handleQuitGame = async () => {
+    // TODO: API call to quit the game
+    const mockQuiteGameResponse = 'success';
+
+    if (mockQuiteGameResponse === 'success') {
+      setGameRoomId('');
+      navigate('/');
+    }
+  };
+
+  const getRoomStatus = async () => {
+    // TODO: API call to get room status
+    // Should also create temp user when join or create a room
+    // Should return who is the owner of the room and how many players are in the room
+    const mockRoomStatusResponse = {
+      owner: 'Player 1',
+      players: [
+        {
+          name: 'Player 1',
+          character: 'Character 1',
+          current_room: 'Room 1',
+        },
+        {
+          name: 'Player 2',
+          character: 'Character 2',
+          current_room: 'Room 2',
+        },
+      ],
+    };
+    setRoomStatus(mockRoomStatusResponse);
+  };
+
+  const isRoomOwner = roomStatus?.owner === 'Player 1';
+  const players = roomStatus?.players;
 
   useEffect(() => {
-    const fetchGameState = async () => {
-      try {
-        console.log('Fetching game state...')
-        const response = await client.get<any>('testing/getMockGameState?payload=gettingGameState');
-
-        setGameState(response.data);
-      } catch (error) {
-        console.error('Error fetching game state:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGameState();
-  }, []);
-
-  if (loading) {
-    return <Text>Loading game state...</Text>;
-  }
-
-  if (!gameState) {
-    return <Text>Error: No game state found</Text>;
-  }
+    getRoomStatus();
+  }, [roomId]);
 
   return (
-    <Container>
-      <Text variant="h2" color="primary">Game Room</Text>
+    <Container
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={2}
+      m={2}
+    >
+      <Text>Game Room: {roomId}</Text>
+      <Text>Players: {JSON.stringify(players, null, 2)}</Text>
 
-      {/* Current Turn */}
-      <Text variant="body1">Current Turn: {gameState?.current_turn}</Text>
+      <Container display="flex" alignItems="center" gap={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleStartGame}
+          disabled={!isRoomOwner}
+        >
+          Start Game
+        </Button>
 
-      {/* Players */}
-      <Text variant="body1">
-        Players: 
-        {gameState?.players?.map((player: any, index: number) => (
-          <div key={index}>
-            <strong>{player.name}</strong> ({player.character}) - Currently in: {player.current_room}
-            {player.has_made_suggestion ? ' - Has made a suggestion' : ''}
-          </div>
-        ))}
-      </Text>
-
-      {/* Suggestions */}
-      <Text variant="body1">
-        Suggestions:
-        {gameState?.suggestions?.map((suggestion: any, index: number) => (
-          <div key={index}>
-            <strong>{suggestion.player}:</strong> {suggestion.suggestion}
-          </div>
-        ))}
-      </Text>
-
-      {/* Button to make a move */}
-      <Button onClick={() => alert('[TODO] Make your move!')}>Make a Move</Button>
+        <Button variant="outlined" color="primary" onClick={handleQuitGame}>
+          Quit
+        </Button>
+      </Container>
     </Container>
   );
 };
