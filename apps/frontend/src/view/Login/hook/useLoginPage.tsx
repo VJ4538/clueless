@@ -17,7 +17,7 @@ const useLoginPage = () => {
     // TODO: API call to create a new room
     // Game ID is returned from the API call
     try {
-      const mockApiResponse = 'TestGameRoomId';
+      const mockApiResponse = 'newGameRoomId';
       navigate(`/room/${mockApiResponse}`);
     } catch (error) {
       console.error('Error creating new room', error);

@@ -34,8 +34,9 @@ const GameRoom = () => {
     // TODO: API call to get room status
     // Should also create temp user when join or create a room
     // Should return who is the owner of the room and how many players are in the room
-    const mockRoomStatusResponse = {
-      owner: 'Player 1',
+
+    let mockRoomStatusResponse = {
+      owner: 'Player 2',
       players: [
         {
           name: 'Player 1',
@@ -45,10 +46,24 @@ const GameRoom = () => {
         {
           name: 'Player 2',
           character: 'Character 2',
-          current_room: 'Room 2',
+          current_room: 'Room 1',
         },
       ],
     };
+
+    if (roomId === 'newGameRoomId') {
+      mockRoomStatusResponse = {
+        owner: 'Player 1',
+        players: [
+          {
+            name: 'Player 1',
+            character: 'Character 1',
+            current_room: 'Room 1',
+          },
+        ],
+      };
+    }
+
     setRoomStatus(mockRoomStatusResponse);
   };
 
@@ -67,8 +82,17 @@ const GameRoom = () => {
       gap={2}
       m={2}
     >
-      <Text>Game Room: {roomId}</Text>
-      <Text>Players: {JSON.stringify(players, null, 2)}</Text>
+      <Text>Share Game Room Invite: {roomId}</Text>
+      <Text>
+        Players:{' '}
+        {players?.map((player: any, index: number) => (
+          <Container key={player.id}>
+            {index + 1}. {player.name}
+            {player.name === roomStatus?.owner && ' (Owner)'}
+            {player.name === 'Player 1' && ' (You)'}
+          </Container>
+        ))}
+      </Text>
 
       <Container display="flex" alignItems="center" gap={2}>
         <Button

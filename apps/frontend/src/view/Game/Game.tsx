@@ -53,7 +53,7 @@ const Game: React.FC = () => {
       m={2}
     >
       <Text variant="h2" color="primary">
-        Game Room
+        Game View
       </Text>
 
       {/* Current Turn */}
