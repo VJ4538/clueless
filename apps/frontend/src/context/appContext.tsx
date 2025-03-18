@@ -1,7 +1,9 @@
 import { createContext, useContext, useState, useMemo } from 'react';
 
 interface AppContextData {
-  gameRoomId: string | null;
+  gameRoom: any;
+  setGameRoom: (room: any) => void;
+  gameRoomId: string;
   setGameRoomId: (id: string) => void;
 }
 
@@ -12,14 +14,17 @@ export default function AppContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [gameRoom, setGameRoom] = useState<any>(null);
   const [gameRoomId, setGameRoomId] = useState<string>('');
 
   const values = useMemo(
     () => ({
+      gameRoom,
+      setGameRoom,
       gameRoomId,
       setGameRoomId,
     }),
-    [gameRoomId]
+    [gameRoom, gameRoomId]
   );
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;

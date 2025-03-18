@@ -27,6 +27,6 @@ app.add_middleware(
 )
 
 # Router config
-app.include_router(router, prefix="/api/testing")
+app.include_router(router, prefix="/api")
 
 

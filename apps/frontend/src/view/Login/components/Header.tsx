@@ -3,12 +3,8 @@ import { Container, Text } from '@components';
 const Header = () => {
   return (
     <Container>
-      <Text variant="h6" textAlign="center">
-        Clue Less place holder
-      </Text>
-
-      <Text variant="body1" textAlign="center">
-        Text placeholder
+      <Text variant="h4" color="primary" textAlign="center">
+        Home View
       </Text>
     </Container>
   );

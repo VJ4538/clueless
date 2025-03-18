@@ -19,7 +19,7 @@ const JoinRoomInput = () => {
       <Button
         variant="contained"
         color="primary"
-        disabled={!enableJoinRoom}
+        // disabled={!enableJoinRoom}
         onClick={handleJoinRoom}
       >
         Join
