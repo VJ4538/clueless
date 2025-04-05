@@ -1,10 +1,16 @@
 import { createContext, useContext, useState, useMemo } from 'react';
+import { User } from '@helpers';
 
 interface AppContextData {
+  user: User | null;
+  setUser: (user: User) => void;
+  userInputGameRoomId: string;
+  setUserInputGameRoomId: (id: string) => void;
+  handleUpdateUserInputGameRoomId: (e: any) => void;
   gameRoom: any;
   setGameRoom: (room: any) => void;
-  gameRoomId: string;
-  setGameRoomId: (id: string) => void;
+  ws: any;
+  setWs: any;
 }
 
 const AppContext = createContext<AppContextData | undefined>(undefined);
@@ -14,17 +20,29 @@ export default function AppContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [userInputGameRoomId, setUserInputGameRoomId] = useState('');
   const [gameRoom, setGameRoom] = useState<any>(null);
-  const [gameRoomId, setGameRoomId] = useState<string>('');
+  const [ws, setWs] = useState<any>(null);
+
+  const handleUpdateUserInputGameRoomId = (e: any) => {
+    console.log('e.target.value', e.target.value);
+    setUserInputGameRoomId(e.target.value);
+  };
 
   const values = useMemo(
     () => ({
+      user,
+      setUser,
+      userInputGameRoomId,
+      setUserInputGameRoomId,
+      handleUpdateUserInputGameRoomId,
       gameRoom,
       setGameRoom,
-      gameRoomId,
-      setGameRoomId,
+      ws,
+      setWs,
     }),
-    [gameRoom, gameRoomId]
+    [gameRoom, userInputGameRoomId, user]
   );
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;

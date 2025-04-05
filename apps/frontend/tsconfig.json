@@ -22,7 +22,8 @@
     "paths": {
       "@components": ["./src/components"],
       "@view": ["./src/view"],
-      "@helpers": ["./src/helpers"]
+      "@helpers": ["./src/helpers"],
+      "@appContext":["./src/context/appContext.tsx"]
     },
   },
   "include": ["src"],

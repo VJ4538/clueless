@@ -1,10 +1,13 @@
 import { Button, Container } from '@components';
 import { TextField } from '@mui/material';
 import useLoginPage from '../hook/useLoginPage';
+import { useAppContext } from '../../../context/appContext';
 
 const JoinRoomInput = () => {
-  const { enableJoinRoom, gameRoomId, handleSetGameRoomId, handleJoinRoom } =
-    useLoginPage();
+  const { handleUpdateUserInputGameRoomId, userInputGameRoomId } =
+    useAppContext();
+
+  const { handleJoinRoom } = useLoginPage();
 
   return (
     <Container display="flex" justifyContent="center" alignItems="center">
@@ -12,14 +15,14 @@ const JoinRoomInput = () => {
         fullWidth
         size="small"
         placeholder="Enter room id"
-        value={gameRoomId}
-        onChange={handleSetGameRoomId}
+        value={userInputGameRoomId}
+        onChange={handleUpdateUserInputGameRoomId}
       />
 
       <Button
         variant="contained"
         color="primary"
-        // disabled={!enableJoinRoom}
+        disabled={!userInputGameRoomId}
         onClick={handleJoinRoom}
       >
         Join
