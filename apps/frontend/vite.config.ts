@@ -17,6 +17,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components'),
       '@helpers': path.resolve(__dirname, './src/helpers'),
       '@helpers/*': path.resolve(__dirname, './src/helpers/*'),
+      '@appContext': path.resolve(__dirname, './src/context/appContext.tsx'),
     },
   },
   build: {

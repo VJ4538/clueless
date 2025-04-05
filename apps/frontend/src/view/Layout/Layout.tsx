@@ -11,9 +11,7 @@ const Layout = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Container
-        sx={{ border: '1px solid black', borderRadius: 2, width: '500px' }}
-      >
+      <Container border={1} borderRadius={1} p={1} minWidth={400}>
         <NavBar />
         <Outlet />
       </Container>

@@ -39,14 +39,14 @@ class HttpClient {
     this.axiosInstance = axiosInstance;
   }
 
-  public get<T>(
+  public get<T = any>(
     url: string,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this.axiosInstance.get(url, config);
   }
 
-  public post<T>(
+  public post<T = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig

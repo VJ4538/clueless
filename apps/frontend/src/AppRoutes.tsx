@@ -1,4 +1,4 @@
-import { GameRoom, Login, Game } from '@view';
+import { Login, Game } from '@view';
 import {
   Routes as RouterRoutes,
   Route,
@@ -7,10 +7,7 @@ import {
 } from 'react-router-dom';
 import Layout from './view/Layout/Layout';
 
-const gameRoutes = [
-  { path: '/room/:roomId', element: <Game /> },
-  { path: '/game/:roomId', element: <GameRoom /> },
-];
+const gameRoutes = [{ path: '/room/:roomId', element: <Game /> }];
 
 const authRoutes = [{ path: '/', element: <Login /> }];
 
