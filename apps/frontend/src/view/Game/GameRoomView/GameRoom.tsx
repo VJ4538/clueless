@@ -25,8 +25,8 @@ const GameRoom = () => {
         <Invitation />
 
         {gameRoom?.players && <Players players={gameRoom.players} />}
-        {gameRoom?.activities && (
-          <GameRoomMessages messages={gameRoom?.activities} />
+        {gameRoom?.waiting_room_activities && (
+          <GameRoomMessages messages={gameRoom?.waiting_room_activities} />
         )}
 
         <GameRoomActions />

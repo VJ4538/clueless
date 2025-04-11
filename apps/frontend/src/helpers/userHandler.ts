@@ -6,6 +6,8 @@ export interface User {
   cards: Card[];
 }
 
+type AuthUser = Pick<User, 'id' | 'name' | 'gameRoomId' | 'isHost'>;
+
 interface Card {
   id: string;
   name: string;
@@ -13,7 +15,7 @@ interface Card {
   type: string;
 }
 
-const storeTempUserData = (user: User) => {
+const storeTempUserData = (user: AuthUser) => {
   try {
     sessionStorage.setItem('user', JSON.stringify(user));
   } catch (e) {

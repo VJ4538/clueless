@@ -17,7 +17,7 @@ const GameView: React.FC = () => {
   const { gameRoom, setGameRoom } = useAppContext();
   const currentPlayer = getTempUserData();
 
-  console.log("Move to Game View");
+  console.log('Move to Game View');
   console.log(gameRoom);
 
   const updateGameState = (actionType: any) => async () => {
@@ -68,18 +68,19 @@ const GameView: React.FC = () => {
             <Text>
               {currentPlayer?.name}'s Cards:
               {currentPlayer?.cards?.map((card: any) => (
-                <Text key={card.id}>
-                  {card.name}
-                </Text>
+                <Text key={card.id}>{card.name}</Text>
               ))}
             </Text>
           </Container>
 
-          <Container style={{ marginTop: '20px' }} >
+          <Container style={{ marginTop: '20px' }}>
             <Text variant="body1">Notifications:</Text>
             <Text variant="body1">
-              {gameRoom?.activities?.map((activity: any) => (
-                <div key={1000+activity?.id}>{activity?.player_name} {activity?.message} {activity?.timeStamp}</div>
+              {gameRoom?.game_activities?.map((activity: any) => (
+                <div key={1000 + activity?.id}>
+                  {activity?.player_name} {activity?.message}{' '}
+                  {activity?.timeStamp}
+                </div>
               ))}
             </Text>
           </Container>
