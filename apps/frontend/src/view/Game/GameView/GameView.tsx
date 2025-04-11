@@ -3,6 +3,7 @@ import { client } from '@helpers';
 import { Text, Container, Button } from '@components';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '@appContext';
+import ClueBoard from '../../../components/clue/ClueBoard';
 
 const mockGameState = {
   current_turn: 'Player 1',
@@ -54,7 +55,13 @@ const GameView: React.FC = () => {
         Game View
       </Text>
 
-      {/* <Text variant="body1">
+      {
+          <div>
+          <h2 style={{ textAlign: 'center' }}>Clue Board</h2>
+          <ClueBoard />
+        </div>
+      
+      /* <Text variant="body1">
         Current Players:
         {gameRoom?.players?.map((player: any, index: number) => (
           <span key={index}>{player.name}</span>
