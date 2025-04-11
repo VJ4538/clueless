@@ -7,7 +7,6 @@ const GameRoomActions = () => {
   const currentPlayer = getTempUserData();
 
   const handleStartGame = async () => {
-    ws.game_state = "IN_PROGRESS"; // todo, forcing start of game to work on game board
     if (ws && currentPlayer) {
       sendWSMessage(ws, {
         action: 'START_GAME',

@@ -37,7 +37,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
             action = message.get("action")
 
-            if action == "REQUEST_ROOM_DATA":
+            if action == "REQUSET_ROOM_DATA":
                 await broadcast_to_room(
                     room_id,
                     {
