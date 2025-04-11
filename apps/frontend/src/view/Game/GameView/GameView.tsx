@@ -67,12 +67,9 @@ const GameView: React.FC = () => {
           <Container>
             <Text>
               {currentPlayer?.name}'s Cards:
-              {currentPlayer?.cards?.map((player: any, index: number) => (
-                <Text key={player.id}>
-                  {index + 1}. {player.name}
-                  {player.is_host
-                    ? ' ⭐ (Host)'
-                    : currentPlayer.id === player.id && ' (You)'}
+              {currentPlayer?.cards?.map((card: any) => (
+                <Text key={card.id}>
+                  {card.name}
                 </Text>
               ))}
             </Text>
