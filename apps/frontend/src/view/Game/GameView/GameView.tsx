@@ -17,6 +17,9 @@ const GameView: React.FC = () => {
   const { gameRoom, setGameRoom } = useAppContext();
   const currentPlayer = getTempUserData();
 
+  console.log("Move to Game View");
+  console.log(gameRoom);
+
   const updateGameState = (actionType: any) => async () => {
     const response = await client.post<any>(`game/status/update`, {
       room_id: roomId,
@@ -75,11 +78,11 @@ const GameView: React.FC = () => {
             </Text>
           </Container>
 
-          <Container>
+          <Container style={{ marginTop: '20px' }} >
             <Text variant="body1">Notifications:</Text>
             <Text variant="body1">
-              {gameRoom?.notifications?.map((notification: any, index: number) => (
-                <div key={index}>{notification}</div>
+              {gameRoom?.activities?.map((activity: any) => (
+                <div key={1000+activity?.id}>{activity?.player_name} {activity?.message} {activity?.timeStamp}</div>
               ))}
             </Text>
           </Container>
