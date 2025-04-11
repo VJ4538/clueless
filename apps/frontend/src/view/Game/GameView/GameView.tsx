@@ -56,37 +56,40 @@ const GameView: React.FC = () => {
       </Text>
 
       {
+        <div>
+          <Text variant="body1">
+            Current Players:
+            {gameRoom?.players?.map((player: any, index: number) => (
+              <span key={index}> {player.name} </span>
+            ))}
+          </Text>
+
           <div>
-          <h2 style={{ textAlign: 'center' }}>Clue Board</h2>
-          <ClueBoard />
+            <h2 style={{ textAlign: 'center' }}>Clue Board</h2>
+            <ClueBoard />
+          </div>
+
+          <Text variant="body1" color="error">
+            Current Turn: {gameRoom?.current_turn}
+          </Text>
+
+          <Container>
+            <Text variant="body1">Notifications:</Text>
+            <Text variant="body1">
+              {gameRoom?.notifications?.map((notification: any, index: number) => (
+                <div key={index}>{notification}</div>
+              ))}
+            </Text>
+          </Container>
+
+          <Button onClick={updateGameState('move')} variant="contained">
+            Make a move
+          </Button>
+          <Button onClick={updateGameState('suggestion')} variant="contained">
+            Make a suggestion
+          </Button>
         </div>
-      
-      /* <Text variant="body1">
-        Current Players:
-        {gameRoom?.players?.map((player: any, index: number) => (
-          <span key={index}>{player.name}</span>
-        ))}
-      </Text>
-
-      <Text variant="body1" color="error">
-        Current Turn: {gameRoom?.current_turn}
-      </Text>
-
-      <Container>
-        <Text variant="body1">Notifications:</Text>
-        <Text variant="body1">
-          {gameRoom?.notifications?.map((notification: any, index: number) => (
-            <div key={index}>{notification}</div>
-          ))}
-        </Text>
-      </Container>
-
-      <Button onClick={updateGameState('move')} variant="contained">
-        Make a move
-      </Button>
-      <Button onClick={updateGameState('suggestion')} variant="contained">
-        Make a suggestion
-      </Button> */}
+      }
     </Container>
   );
 };
