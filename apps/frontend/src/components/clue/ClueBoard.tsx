@@ -1,10 +1,11 @@
-import React from 'react';
 import Room from './Room';
 import Hallway from './Hallway';
 
 const Spacer = () => <div style={{ backgroundColor: 'transparent' }} />;
 
-const ClueBoard = () => {
+const ClueBoard = ( gameBoard: any ) => {
+  console.log(gameBoard);
+  gameBoard = gameBoard.gameBoard;
   return (
     <div style={{
       display: 'grid',
@@ -16,21 +17,22 @@ const ClueBoard = () => {
       margin: 'auto',
       padding: '1rem',
     }}>
+
       <Spacer />
       <Spacer />
       <Spacer />
       <Spacer />
-      <Hallway id="hallway-0" />
+      <Hallway id="hallway-0" players={gameBoard?.players}/>
       <Spacer />
       <Spacer />
       
 
       <Spacer />
-      <Room name="Study" shortcutTo='Kitchen' />
-      <Hallway id="hallway-1"/>
-      <Room name="Hall" />
-      <Hallway id="hallway-2"/>
-      <Room name="Lounge" shortcutTo='Conservatory' />
+      <Room name="Study" shortcutTo='Kitchen' players={gameBoard.players}/>
+      <Hallway id="hallway-1" players={gameBoard?.players}/>
+      <Room name="Hall" players={gameBoard?.players}/>
+      <Hallway id="hallway-2" players={gameBoard?.players}/>
+      <Room name="Lounge" shortcutTo='Conservatory' players={gameBoard?.players}/>
       <Spacer />
 
       <Hallway id="hallway-3"/>

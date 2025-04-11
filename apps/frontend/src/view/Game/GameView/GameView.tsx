@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '@helpers';
-import { Text, Container, Button } from '@components';
+import { Text, Container, Button, ClueBoard } from '@components';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '@appContext';
-import ClueBoard from '../../../components/clue/ClueBoard';
 
 const mockGameState = {
   current_turn: 'Player 1',
@@ -66,13 +65,20 @@ const GameView: React.FC = () => {
 
           <div>
             <h2 style={{ textAlign: 'center' }}>Clue Board</h2>
-            <ClueBoard />
+            <ClueBoard gameBoard={gameRoom} />
           </div>
 
           <Text variant="body1" color="error">
             Current Turn: {gameRoom?.current_turn}
           </Text>
 
+          <Button onClick={updateGameState('move')} variant="contained">
+            Make a move
+          </Button>
+          <Button onClick={updateGameState('suggestion')} variant="contained">
+            Make a suggestion
+          </Button>
+          
           <Container>
             <Text variant="body1">Notifications:</Text>
             <Text variant="body1">
@@ -81,13 +87,6 @@ const GameView: React.FC = () => {
               ))}
             </Text>
           </Container>
-
-          <Button onClick={updateGameState('move')} variant="contained">
-            Make a move
-          </Button>
-          <Button onClick={updateGameState('suggestion')} variant="contained">
-            Make a suggestion
-          </Button>
         </div>
       }
     </Container>
