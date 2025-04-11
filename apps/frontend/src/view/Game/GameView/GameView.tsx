@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { client } from '@helpers';
+import { client, getTempUserData } from '@helpers';
 import { Text, Container, Button, ClueBoard } from '@components';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '@appContext';
@@ -15,21 +15,7 @@ const GameView: React.FC = () => {
   const { roomId } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const { gameRoom, setGameRoom } = useAppContext();
-
-  // if (loading) {
-  //   return <Text>Loading game state...</Text>;
-  // }
-
-  // if (!gameState) {
-  //   return <Text>Error: No game state found</Text>;
-  // }
-
-  const mockPlayerMoves: any = {
-    '0': 'Player 1',
-    '1': 'Player 2',
-    '2': 'Player 3',
-    '3': 'Player 4',
-  };
+  const currentPlayer = getTempUserData();
 
   const updateGameState = (actionType: any) => async () => {
     const response = await client.post<any>(`game/status/update`, {
@@ -64,13 +50,9 @@ const GameView: React.FC = () => {
           </Text>
 
           <div>
-            <h2 style={{ textAlign: 'center' }}>Clue Board</h2>
+            <h2 style={{ textAlign: 'center' }}>Clueless Board</h2>
             <ClueBoard gameBoard={gameRoom} />
           </div>
-
-          <Text variant="body1" color="error">
-            Current Turn: {gameRoom?.current_turn}
-          </Text>
 
           <Button onClick={updateGameState('move')} variant="contained">
             Make a move
@@ -78,7 +60,21 @@ const GameView: React.FC = () => {
           <Button onClick={updateGameState('suggestion')} variant="contained">
             Make a suggestion
           </Button>
-          
+
+          <Container>
+            <Text>
+              {currentPlayer?.name}'s Cards:
+              {currentPlayer?.cards?.map((player: any, index: number) => (
+                <Text key={player.id}>
+                  {index + 1}. {player.name}
+                  {player.is_host
+                    ? ' ⭐ (Host)'
+                    : currentPlayer.id === player.id && ' (You)'}
+                </Text>
+              ))}
+            </Text>
+          </Container>
+
           <Container>
             <Text variant="body1">Notifications:</Text>
             <Text variant="body1">
