@@ -3,6 +3,14 @@ export interface User {
   name: string;
   gameRoomId: string | null;
   isHost: boolean;
+  cards: Card[];
+}
+
+interface Card {
+  id: string;
+  name: string;
+  color: string;
+  type: string;
 }
 
 const storeTempUserData = (user: User) => {

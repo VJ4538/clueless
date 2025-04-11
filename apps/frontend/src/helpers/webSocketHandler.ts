@@ -21,7 +21,7 @@ const roomWebSocketConnector = (
 
   ws.onopen = () => {
     console.log('✅ WebSocket connected');
-    ws.send(JSON.stringify({ action: 'REQUSET_ROOM_DATA' }));
+    ws.send(JSON.stringify({ action: 'REQUEST_ROOM_DATA' }));
   };
 
   ws.onmessage = (event: any) => {
@@ -37,6 +37,7 @@ const roomWebSocketConnector = (
 
       case 'QUIT_FROM_ROOM_SUCCESS':
         if (currentPlayer.id === message.player_id) {
+          console.log("QUIT FROM ROOM SUCCESS");
           navigate('/');
           setUserInputGameRoomId('');
         }
