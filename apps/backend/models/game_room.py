@@ -19,14 +19,20 @@ class GameRoom(BaseModel):
             "character": None,
         }
     )
-    activities: List[Activity] = Field(default_factory=list)
+    waiting_room_activities: List[Activity] = Field(default_factory=list)
+    game_activities: List[Activity] = Field(default_factory=list)
 
     @classmethod
     def create(
-        cls, room_id: str, player_list: List[Player], activities: List[Activity]
+        cls,
+        room_id: str,
+        player_list: List[Player],
+        waiting_room_activities: List[Activity],
+        activities: List[Activity],
     ) -> "GameRoom":
         return cls(
             id=room_id,
             players=player_list,
+            waiting_room_activities=waiting_room_activities,
             activities=activities,
         )

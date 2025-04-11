@@ -30,7 +30,7 @@ def join_game_room(payload: dict):
         current_room.players.append(temp_player)
 
         # Update activities
-        current_room.activities.append(
+        current_room.waiting_room_activities.append(
             Activity(
                 player_name=temp_player.name,
                 message=PlayerActivity.JOIN,
@@ -58,7 +58,7 @@ def create_game_room():
 
         temp_user = generate_temp_user(is_host=True)
         player_list = [temp_user]
-        new_activity = [
+        new_waiting_room_activity = [
             Activity(
                 player_name=temp_user.name,
                 message=PlayerActivity.JOIN,
@@ -66,7 +66,10 @@ def create_game_room():
         ]
 
         new_game_room = GameRoom(
-            id=room_id, players=player_list, activities=new_activity
+            id=room_id,
+            players=player_list,
+            waiting_room_activities=new_waiting_room_activity,
+            activities=[],
         )
 
         # Initialize new game state for this room
