@@ -11,8 +11,8 @@ const Layout = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Container border={1} borderRadius={1} p={1} minWidth={400}>
-        <NavBar />
+      <NavBar />
+      <Container border={1} borderRadius={1} minWidth={400}>
         <Outlet />
       </Container>
     </Container>

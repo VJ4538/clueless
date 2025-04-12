@@ -1,6 +1,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 import json
-from services.game_logic import setup_game
+from models.activity import Activity
+from services.game_logic import player_movement, setup_game
 from store.store import active_game_rooms, connections_by_room
 from helpers.helpers import get_room_data, remove_player_from_room
 from enums.enums import GameStatus
@@ -37,6 +38,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             print(f"[{room_id}] Received from client: {raw_data}")
 
             action = message.get("action")
+            room = get_room_data(room_id)
 
             if action == "REQUEST_ROOM_DATA":
                 await broadcast_to_room(
@@ -66,16 +68,35 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     )
             elif action == "START_GAME":
 
-                room = get_room_data(room_id)
-
-                room.game_state = GameStatus.IN_PROGRESS
-
                 print(f"Starting game for room {room}")
 
-                solution, players = setup_game(room.config.get("cards"), room.players)
+                solution, players = setup_game(
+                    room.config.get("cards"), room.players, room.config
+                )
 
+                room.game_state = GameStatus.IN_PROGRESS
                 room.solution = solution
                 room.players = players
+                room.current_turn = players[0].name
+
+                await broadcast_to_room(
+                    room_id,
+                    {
+                        "type": "UPDATE_ROOM_DATA",
+                        "payload": room.json(),
+                    },
+                )
+            elif action == "PLAYER_MOVE":
+                player_name = message.get("player_id")
+                character_name = message.get("character_name")
+                target_location = message.get("target_location")
+
+                player_movement(
+                    room,
+                    player_name=player_name,
+                    character_name=character_name,
+                    target_location=target_location,
+                )
 
                 await broadcast_to_room(
                     room_id,

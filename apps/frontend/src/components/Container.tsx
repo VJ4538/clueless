@@ -1,7 +1,7 @@
 import { Box, BoxProps } from '@mui/material';
 
 interface ContainerProps extends BoxProps {
-  children: BoxProps['children'];
+  children?: BoxProps['children'];
 }
 
 const Container = ({ children, ...props }: ContainerProps) => {

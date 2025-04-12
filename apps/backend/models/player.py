@@ -7,9 +7,9 @@ import random
 class Player(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
-    character: Optional[str] = None
+    character: str = None
     is_host: bool = False
-    current_location: Optional[str] = None
+    current_location: str = None
     has_moved: bool = False
     cards: List[Dict] = Field(default_factory=list)
 

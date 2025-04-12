@@ -1,91 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { client, getTempUserData } from '@helpers';
-import { Text, Container, Button, ClueBoard } from '@components';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { getTempUserData } from '@helpers';
+import { Text, Container, Button } from '@components';
 import { useAppContext } from '@appContext';
-
-const mockGameState = {
-  current_turn: 'Player 1',
-  players: [],
-  suggestions: [],
-  rooms: [],
-};
+import PlayerTurnSection from './components/PlayerTurn';
+import GameRoomMessages from '../GameRoomView/components/GameRoomMessages';
+import ClueBoard from './components/ClueBoard';
+import PlayerCard from './components/PlayerCardSection';
+import PlayerActions from './components/PlayerActions';
 
 const GameView: React.FC = () => {
-  const { roomId } = useParams();
-  const [loading, setLoading] = useState<boolean>(true);
-  const { gameRoom, setGameRoom } = useAppContext();
-  const currentPlayer = getTempUserData();
+  const { gameRoom } = useAppContext();
 
-  console.log('Move to Game View');
-  console.log(gameRoom);
+  const updateGameState = (actionType: any) => async () => {};
 
-  const updateGameState = (actionType: any) => async () => {
-    const response = await client.post<any>(`game/status/update`, {
-      room_id: roomId,
-      player_id:
-        gameRoom?.current_turn === 'Player 2' ? 'Player 1' : 'Player 2',
-      action_type: actionType,
-    });
+  if (!gameRoom) {
+    return <Text>Loading game state...</Text>;
+  }
 
-    console.log('Game State Test:', response.data.response);
-  };
+  console.log('GAME ROOM:', gameRoom);
 
   return (
-    <Container
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      gap={2}
-      m={2}
-    >
-      <Text variant="h4" color="primary">
-        Game View
-      </Text>
+    <Container display="flex" alignItems="center" gap={5}>
+      <Container p={1}>
+        <PlayerTurnSection />
+        <ClueBoard />
+      </Container>
 
-      {
-        <div>
-          <Text variant="body1">
-            Current Players:
-            {gameRoom?.players?.map((player: any, index: number) => (
-              <span key={index}> {player.name} </span>
-            ))}
-          </Text>
+      <Container
+        display="flex"
+        flexDirection="column"
+        width="100%"
+        height="100%"
+        gap={2}
+        p={1}
+      >
+        <GameRoomMessages
+          messages={gameRoom?.game_activities}
+          minHeight="200px"
+        />
 
-          <div>
-            <h2 style={{ textAlign: 'center' }}>Clueless Board</h2>
-            <ClueBoard gameBoard={gameRoom} />
-          </div>
+        <PlayerCard />
 
-          <Button onClick={updateGameState('move')} variant="contained">
-            Make a move
-          </Button>
-          <Button onClick={updateGameState('suggestion')} variant="contained">
-            Make a suggestion
-          </Button>
-
-          <Container>
-            <Text>
-              {currentPlayer?.name}'s Cards:
-              {currentPlayer?.cards?.map((card: any) => (
-                <Text key={card.id}>{card.name}</Text>
-              ))}
-            </Text>
-          </Container>
-
-          <Container style={{ marginTop: '20px' }}>
-            <Text variant="body1">Notifications:</Text>
-            <Text variant="body1">
-              {gameRoom?.game_activities?.map((activity: any) => (
-                <div key={1000 + activity?.id}>
-                  {activity?.player_name} {activity?.message}{' '}
-                  {activity?.timeStamp}
-                </div>
-              ))}
-            </Text>
-          </Container>
-        </div>
-      }
+        <PlayerActions />
+      </Container>
     </Container>
   );
 };
