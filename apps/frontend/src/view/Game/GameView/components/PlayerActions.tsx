@@ -49,6 +49,10 @@ const PlayerActions = () => {
     setOpen(false);
   };
 
+  const secretPassage =
+    gameRoom?.config?.connections[currentInGamePlayer?.current_location]
+      ?.secretPassage;
+
   return (
     <>
       <GameRoomSection title="Player Actions:">
@@ -118,6 +122,15 @@ const PlayerActions = () => {
                   </Button>
                 );
               })}
+
+              {secretPassage && (
+                <Button
+                  variant="contained"
+                  onClick={sendMoveMessage(secretPassage)}
+                >
+                  {secretPassage}
+                </Button>
+              )}
             </Container>
           </Container>
         </Container>
