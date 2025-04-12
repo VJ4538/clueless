@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from enums.enums import GameStatus
 from models.activity import Activity
 from models.player import Player
+from services.game_config import get_game_config
 
 
 class GameRoom(BaseModel):
@@ -21,6 +22,7 @@ class GameRoom(BaseModel):
     )
     waiting_room_activities: List[Activity] = Field(default_factory=list)
     game_activities: List[Activity] = Field(default_factory=list)
+    config: Dict[str, Any] = Field(default_factory=get_game_config)
 
     @classmethod
     def create(
