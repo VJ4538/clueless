@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import Dict, List, Optional
 import uuid
 import random
 
@@ -11,7 +11,7 @@ class Player(BaseModel):
     is_host: bool = False
     current_location: Optional[str] = None
     has_moved: bool = False
-    cards: List[str] = Field(default_factory=list)
+    cards: List[Dict] = Field(default_factory=list)
 
     @classmethod
     def create(cls, is_host: bool) -> "Player":

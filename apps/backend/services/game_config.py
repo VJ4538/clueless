@@ -31,6 +31,34 @@ def generate_connection_map(board_raw):
 
 
 def get_game_config() -> Dict[str, Any]:
+
+    cards = [
+        # Suspect cards
+        {"id": "card-1", "type": "suspect", "name": "Miss Scarlet"},
+        {"id": "card-2", "type": "suspect", "name": "Colonel Mustard"},
+        {"id": "card-3", "type": "suspect", "name": "Mrs. White"},
+        {"id": "card-4", "type": "suspect", "name": "Mr. Green"},
+        {"id": "card-5", "type": "suspect", "name": "Mrs. Peacock"},
+        {"id": "card-6", "type": "suspect", "name": "Professor Plum"},
+        # Weapon cards
+        {"id": "card-7", "type": "weapon", "name": "Candlestick"},
+        {"id": "card-8", "type": "weapon", "name": "Dagger"},
+        {"id": "card-9", "type": "weapon", "name": "Lead Pipe"},
+        {"id": "card-10", "type": "weapon", "name": "Revolver"},
+        {"id": "card-11", "type": "weapon", "name": "Rope"},
+        {"id": "card-12", "type": "weapon", "name": "Wrench"},
+        # Room cards
+        {"id": "card-13", "type": "room", "name": "Study"},
+        {"id": "card-14", "type": "room", "name": "Hall"},
+        {"id": "card-15", "type": "room", "name": "Lounge"},
+        {"id": "card-16", "type": "room", "name": "Library"},
+        {"id": "card-17", "type": "room", "name": "Billiard Room"},
+        {"id": "card-18", "type": "room", "name": "Dining Room"},
+        {"id": "card-19", "type": "room", "name": "Conservatory"},
+        {"id": "card-20", "type": "room", "name": "Ballroom"},
+        {"id": "card-21", "type": "room", "name": "Kitchen"},
+    ]
+
     characters = [
         {
             "id": "char-1",
@@ -143,6 +171,7 @@ def get_game_config() -> Dict[str, Any]:
     ]
 
     return {
+        "cards": cards,
         "connections": generate_connection_map(board_raw),
         "characters": characters,
         "gameboard": board_raw,

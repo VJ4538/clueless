@@ -1,5 +1,6 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 import json
+from services.game_logic import setup_game
 from store.store import active_game_rooms, connections_by_room
 from helpers.helpers import get_room_data, remove_player_from_room
 from enums.enums import GameStatus
@@ -64,12 +65,17 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         )
                     )
             elif action == "START_GAME":
-                # TODO: Game Start logic
-                # Check models/game_room and init the game info
 
                 room = get_room_data(room_id)
 
                 room.game_state = GameStatus.IN_PROGRESS
+
+                print(f"Starting game for room {room}")
+
+                solution, players = setup_game(room.config.get("cards"), room.players)
+
+                room.solution = solution
+                room.players = players
 
                 await broadcast_to_room(
                     room_id,
