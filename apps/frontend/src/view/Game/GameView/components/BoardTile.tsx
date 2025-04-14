@@ -51,7 +51,8 @@ const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
       <Container>
         <Container alignSelf="start">
           <Text fontWeight={600} textAlign="center">
-            {label}
+            {/* {label} */}
+            {id}
           </Text>
         </Container>
 

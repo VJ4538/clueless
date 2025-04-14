@@ -34,6 +34,16 @@ const GameView: React.FC = () => {
         gap={2}
         p={1}
       >
+        <Container>
+          <Text color="error" variant="h6">
+            Debug Solution:
+          </Text>
+          <Text>
+            {gameRoom?.solution?.suspect?.name} -{' '}
+            {gameRoom?.solution?.weapon?.name} -{' '}
+            {gameRoom?.solution?.room?.name}
+          </Text>
+        </Container>
         <GameRoomMessages
           messages={gameRoom?.game_activities}
           minHeight="200px"

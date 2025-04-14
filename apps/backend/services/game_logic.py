@@ -51,16 +51,45 @@ def find_current_player(room: GameRoom, player_id: str) -> Player:
     )
 
 
-def next_player_turn(room: GameRoom):
-    current_player_index = room.players.index(
-        next(p for p in room.players if p.name == room.current_turn)
-    )
+def end_turn(room: GameRoom):
+    current_player_index = 0
+    elimiated_players = 0
+
+    for p in room.players:
+        p.has_accused = False
+        p.has_moved = False
+        p.has_suggested = False
+        if p.name == room.current_turn:
+            current_player_index = room.players.index(p)
+
     next_player_index = (current_player_index + 1) % len(room.players)
+
+    # Skip eliminated players
+    while room.players[next_player_index].is_eliminated:
+        elimiated_players += 1
+        next_player_index = (next_player_index + 1) % len(room.players)
+
+        # Avoid infinite loop
+        if elimiated_players == len(room.players):
+            print("Debug: All players are eliminated")
+            room.game_state = GameStatus.FINISHED
+            room.winner = "All players are eliminated"
+            room.game_activities.append(
+                Activity(
+                    player_name="System",
+                    message="All players are eliminated, game over.",
+                )
+            )
+            return room
+
     room.current_turn = room.players[next_player_index].name
 
-    # confirm next player is allowed to go, else recursively check next
-    if room.players[next_player_index].has_accused:
-        next_player_turn(room)
+    room.game_activities.append(
+        Activity(
+            player_name=room.players[current_player_index].name,
+            message="Ended turn",
+        )
+    )
 
     return room
 
@@ -75,11 +104,8 @@ def player_movement(
     current_location_label = current_player.current_location
     target_location_label = target_location
 
-    # Update location
     current_player.current_location = target_location
-
-    # Update turn
-    next_player_turn(room)
+    current_player.has_moved = True
 
     # Append activity
     room.game_activities.append(
@@ -91,66 +117,97 @@ def player_movement(
 
     return room
 
+
 def player_suggestion(
-        room: GameRoom,
-        player_name: str,
-        suggested_character: str, 
-        suggested_room: str, 
-        suggested_weapon: str):
-    
+    room: GameRoom,
+    player_name: str,
+    suggested_character: str,
+    suggested_room: str,
+    suggested_weapon: str,
+):
+
     # move suggested character into that room
     for player in room.players:
-        if player.character == suggested_character:
+        if player.character.get("name") == suggested_character:
             player.current_location = suggested_room
+            c_name = player.character.get("name")
+            room.game_activities.append(
+                Activity(
+                    player_name=player.name,
+                    message=f"{c_name} moved to {suggested_room} for suggestion",
+                )
+            )
 
     current_player = find_current_player(room, player_name)
+
+    current_player.has_suggested = True
 
     room.game_activities.append(
         Activity(
             player_name=current_player.name,
-            message=f"{current_player.name} suggested: {suggested_character}, {suggested_room}, {suggested_weapon}",
+            message=f"{current_player.character.get('name')} suggested: {suggested_character}, {suggested_room}, {suggested_weapon}",
         )
     )
 
     for player in room.players:
+        # Skip the current player
+        if player.name == current_player.name:
+            continue
         for card in player.cards:
-            if card == suggested_character or card == suggested_room or card == suggested_weapon:
+            if (
+                card.get("name") == suggested_character
+                or card.get("name") == suggested_room
+                or card.get("name") == suggested_weapon
+            ):
                 room.game_activities.append(
                     Activity(
-                        player_name=current_player.name,
-                        message=f"{current_player.name} was revealed: {card}",
+                        player_name=player.name,
+                        message=f"Card revealed from {player.name}: Card Type {card.get('type')} - Card Name {card.get('name')}",
                     )
                 )
                 return room
     # else no cards were revealed
     return room
 
+
 def player_accusation(
-        room: GameRoom, 
-        player_name: str,
-        accused_character: str, 
-        accused_room: str, 
-        accused_weapon: str):
-    
-    # lazily set accused flag
-    for player in room.players:
-        if player.name == player_name:
-            player.has_accused = True
+    room: GameRoom,
+    player_name: str,
+    accused_character: str,
+    accused_room: str,
+    accused_weapon: str,
+):
 
     current_player = find_current_player(room, player_name)
 
-    answer = ""
-    if room.solution["character"] == accused_character and room.solution["room"] == accused_room and room.solution["weapon"] == accused_weapon:
-        answer = "correct"
+    if (
+        room.solution["suspect"].get("name") == accused_character
+        and room.solution["room"].get("name") == accused_room
+        and room.solution["weapon"].get("name") == accused_weapon
+    ):
         room.game_state = GameStatus.FINISHED
-    else: 
-        answer = "incorrect"
+        room.winner = current_player.name
 
-    room.game_activities.append(
-        Activity(
-            player_name=current_player.name,
-            message=f"{current_player.name} made the {answer} accusation: {accused_character}, {accused_room}, {accused_weapon}",
+        room.game_activities.append(
+            Activity(
+                player_name=current_player.name,
+                message=f"{current_player.name} made the correct accusation: {accused_character}, {accused_room}, {accused_weapon}",
+            )
         )
-    )
+        room.game_activities.append(
+            Activity(
+                player_name="System",
+                message=f"Winner is {current_player.name} !!!",
+            )
+        )
+    else:
+        current_player.is_eliminated = True
+        room.game_activities.append(
+            Activity(
+                player_name=current_player.name,
+                message=f"{current_player.character.get('name')} made incorrect accusation and has been eliminated",
+            )
+        )
+        end_turn(room)
 
     return room

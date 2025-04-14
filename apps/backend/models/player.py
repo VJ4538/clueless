@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Dict, List, Optional
+from typing import Dict, List
 import uuid
 import random
 
@@ -12,6 +12,8 @@ class Player(BaseModel):
     current_location: str = None
     has_moved: bool = False
     has_accused: bool = False
+    has_suggested: bool = False
+    is_eliminated: bool = False
     cards: List[Dict] = Field(default_factory=list)
 
     @classmethod

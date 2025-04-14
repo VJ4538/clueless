@@ -26,7 +26,6 @@ export default function AppContextProvider({
   const [ws, setWs] = useState<any>(null);
 
   const handleUpdateUserInputGameRoomId = (e: any) => {
-    console.log('e.target.value', e.target.value);
     setUserInputGameRoomId(e.target.value);
   };
 

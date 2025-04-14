@@ -112,16 +112,16 @@ def get_game_config() -> Dict[str, Any]:
         # Row 2
         {"id": "empty-6", "type": "empty"},
         {
-            "id": "study_room",
+            "id": "Study",
             "type": "room",
             "label": "Study",
             "secretPassageTo": "kitchen",
         },
         {"id": "hallway-1", "type": "hallway", "label": "Hallway 1"},
-        {"id": "hall_room", "type": "room", "label": "Hall"},
+        {"id": "Hall", "type": "room", "label": "Hall"},
         {"id": "hallway-2", "type": "hallway", "label": "Hallway 2"},
         {
-            "id": "lounge_room",
+            "id": "Lounge",
             "type": "room",
             "label": "Lounge",
             "secretPassageTo": "conservatory",
@@ -137,11 +137,11 @@ def get_game_config() -> Dict[str, Any]:
         {"id": "entry-4", "type": "entry"},
         # Row 4
         {"id": "empty-10", "type": "empty"},
-        {"id": "library", "type": "room", "label": "Library"},
+        {"id": "Library", "type": "room", "label": "Library"},
         {"id": "hallway-6", "type": "hallway", "label": "Hallway 6"},
-        {"id": "billiard_room", "type": "room", "label": "Billiard Room"},
+        {"id": "Billiard Room", "type": "room", "label": "Billiard Room"},
         {"id": "hallway-7", "type": "hallway", "label": "Hallway 7"},
-        {"id": "dining_room", "type": "room", "label": "Dining Room"},
+        {"id": "Dining Room", "type": "room", "label": "Dining Room"},
         {"id": "empty-11", "type": "empty"},
         # Row 5
         {"id": "entry-5", "type": "entry"},
@@ -154,16 +154,16 @@ def get_game_config() -> Dict[str, Any]:
         # Row 6
         {"id": "empty-14", "type": "empty"},
         {
-            "id": "conservatory",
+            "id": "Conservatory",
             "type": "room",
             "label": "Conservatory",
             "secretPassageTo": "lounge_room",
         },
         {"id": "hallway-11", "type": "hallway", "label": "Hallway 11"},
-        {"id": "ballroom", "type": "room", "label": "Ballroom"},
+        {"id": "Ballroom", "type": "room", "label": "Ballroom"},
         {"id": "hallway-12", "type": "hallway", "label": "Hallway 12"},
         {
-            "id": "kitchen",
+            "id": "Kitchen",
             "type": "room",
             "label": "Kitchen",
             "secretPassageTo": "study_room",
