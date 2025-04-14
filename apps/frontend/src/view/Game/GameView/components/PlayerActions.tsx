@@ -49,6 +49,32 @@ const PlayerActions = () => {
     setOpen(false);
   };
 
+  const sendSuggestionMessage = (targetLocation: string) => () => {
+    ws.send(
+      JSON.stringify({
+        action: 'PLAYER_SUGGESTION',
+        player_name: currentPlayer?.name,
+        character_name: currentInGamePlayer?.character?.name,
+        source_location: currentInGamePlayer?.current_location,
+        target_location: targetLocation,
+      })
+    );
+    setOpen(false);
+  };
+
+  const sendAccusationMessage = (character: string, room: string, weapon: string) => () => {
+    ws.send(
+      JSON.stringify({
+        action: 'PLAYER_ACCUSATION',
+        player_name: currentPlayer?.name,
+        character: character,
+        room: room,
+        weapon: weapon,
+      })
+    );
+    setOpen(false);
+  };
+
   const secretPassage =
     gameRoom?.config?.connections[currentInGamePlayer?.current_location]
       ?.secretPassage;
