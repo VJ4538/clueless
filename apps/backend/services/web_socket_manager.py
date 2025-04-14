@@ -1,7 +1,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 import json
 from models.activity import Activity
-from services.game_logic import player_movement, setup_game
+from services.game_logic import player_accusation, player_movement, player_suggestion, setup_game
 from store.store import active_game_rooms, connections_by_room
 from helpers.helpers import get_room_data, remove_player_from_room
 from enums.enums import GameStatus
@@ -105,6 +105,42 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "payload": room.json(),
                     },
                 )
+
+            elif action == "PLAYER_SUGGESTION":
+                player_name = message.get("player_name")
+                suggested_character = message.get("character")
+                suggested_room = message.get("room")
+                suggested_weapon = message.get("weapon")
+
+                player_suggestion(room, 
+                                  player_name, 
+                                  suggested_character, 
+                                  suggested_room, 
+                                  suggested_weapon)
+                
+                await broadcast_to_room(
+                    room_id,
+                    {
+                        "type": "UPDATE_ROOM_DATA",
+                        "payload": room.json(),
+                    },
+                )
+
+            elif action == "PLAYER_ACCUSATION":
+                player_name = message.get("player_name")
+                accused_character = message.get("character")
+                accused_room = message.get("room")
+                accused_weapon = message.get("weapon")
+
+                player_accusation(room, player_name,accused_character,accused_room,accused_weapon)
+
+                await broadcast_to_room(
+                    room_id,
+                    {
+                        "type": "UPDATE_ROOM_DATA",
+                        "payload": room.json(),
+                    },
+                )  
 
             # Optionally process messages here
     except WebSocketDisconnect:
