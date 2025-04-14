@@ -1,7 +1,7 @@
 import random
 from typing import Dict, List, Tuple, Any
 
-from apps.backend.enums.enums import GameStatus
+from enums.enums import GameStatus
 from models.activity import Activity
 from models.game_room import GameRoom
 from models.player import Player
@@ -58,6 +58,10 @@ def next_player_turn(room: GameRoom):
     next_player_index = (current_player_index + 1) % len(room.players)
     room.current_turn = room.players[next_player_index].name
 
+    # confirm next player is allowed to go, else recursively check next
+    if room.players[next_player_index].has_accused:
+        next_player_turn(room)
+
     return room
 
 
@@ -94,6 +98,11 @@ def player_suggestion(
         suggested_room: str, 
         suggested_weapon: str):
     
+    # move suggested character into that room
+    for player in room.players:
+        if player.character == suggested_character:
+            player.current_location = suggested_room
+
     current_player = find_current_player(room, player_name)
 
     room.game_activities.append(
@@ -123,6 +132,11 @@ def player_accusation(
         accused_room: str, 
         accused_weapon: str):
     
+    # lazily set accused flag
+    for player in room.players:
+        if player.name == player_name:
+            player.has_accused = True
+
     current_player = find_current_player(room, player_name)
 
     answer = ""

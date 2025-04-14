@@ -11,6 +11,7 @@ class Player(BaseModel):
     is_host: bool = False
     current_location: str = None
     has_moved: bool = False
+    has_accused: bool = False
     cards: List[Dict] = Field(default_factory=list)
 
     @classmethod
