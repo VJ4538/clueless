@@ -161,7 +161,7 @@ def player_suggestion(
             ):
                 room.game_activities.append(
                     Activity(
-                        player_name=player.name,
+                        player_name="System",
                         message=f"Card revealed from {player.name}: Card Type {card.get('type')} - Card Name {card.get('name')}",
                     )
                 )
