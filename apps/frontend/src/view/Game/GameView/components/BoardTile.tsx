@@ -1,5 +1,7 @@
+import { memo } from 'react';
 import Container from '../../../../components/Container';
 import Text from '../../../../components/Text';
+import { nanoid } from 'nanoid';
 
 interface Props {
   id: string;
@@ -12,7 +14,7 @@ interface Props {
 const entryTitlePositionMapping: any = {
   'entry-1': {
     alignSelf: 'end',
-    justifySelf: 'start',
+    justifySelf: 'end',
   },
   'entry-2': {
     alignSelf: 'end',
@@ -33,12 +35,12 @@ const entryTitlePositionMapping: any = {
 };
 
 const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
-  const size = type === 'entry' || type === 'empty' ? '70px' : '115px';
+  const size = type === 'entry' || type === 'empty' ? '90px' : '130px';
   const finalSx = type === 'entry' ? entryTitlePositionMapping[id] : {};
 
   return (
     <Container
-      key={id}
+      key={nanoid()}
       width={size}
       height={size}
       bgcolor={type === 'room' ? '#E9E3E0' : '#FFFFFF'}
@@ -48,7 +50,7 @@ const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
       border={type === 'empty' ? 0 : 1}
       sx={finalSx}
     >
-      <Container>
+      <Container key={nanoid()}>
         <Container alignSelf="start">
           <Text fontWeight={600} textAlign="center">
             {label}
@@ -60,6 +62,7 @@ const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
           (player: any) =>
             player.current_location === id && (
               <Container
+                key={nanoid()}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -90,4 +93,4 @@ const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
   );
 };
 
-export default BoardTile;
+export default memo(BoardTile);

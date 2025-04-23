@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { getTempUserData } from '@helpers';
 import { Container, Text } from '@components';
 import { useAppContext } from '@appContext';
+import GameRoomSection from '../../GameRoomView/components/GameRoomSection';
 
 const PlayerTurn: React.FC = () => {
   const { gameRoom } = useAppContext();
@@ -15,41 +16,38 @@ const PlayerTurn: React.FC = () => {
   }, [currentPlayer, gameRoom.current_turn]);
 
   return (
-    <Container
-      display="flex"
-      border={1}
-      borderRadius={1}
-      p={1}
-      width="100%"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Container>
-        {gameRoom?.players?.map((player: any) => (
-          <Container display="flex" alignItems="center" gap={1}>
-            <Text key={player.id} textAlign="center">
-              {player.name}
-              {currentPlayer?.id === player.id && ' (You)'} :
-            </Text>
-            <Text fontWeight={600}>{player?.character?.name}</Text>
+    <GameRoomSection>
+      <Container display="flex" gap={1} alignItems="center">
+        {/* <Text variant="h6" color="primary" textAlign="center">
+          {playerTurn}
+        </Text> */}
+        <Container>
+          {gameRoom?.players?.map((player: any) => (
             <Container
-              sx={{
-                height: '15px',
-                width: '15px',
-                borderRadius: '50%',
-                border: '1px solid #000',
-                background: player?.character.color?.toLowerCase(),
-              }}
-            />
-          </Container>
-        ))}
+              display="flex"
+              alignItems="center"
+              gap={1}
+              key={player.id}
+            >
+              <Text key={player.id} textAlign="center">
+                {player.name}
+                {currentPlayer?.id === player.id && ' (You)'} :
+              </Text>
+              <Text fontWeight={600}>{player?.character?.name}</Text>
+              <Container
+                sx={{
+                  height: '15px',
+                  width: '15px',
+                  borderRadius: '50%',
+                  border: '1px solid #000',
+                  background: player?.character.color?.toLowerCase(),
+                }}
+              />
+            </Container>
+          ))}
+        </Container>
       </Container>
-
-      <Text variant="h6" color="primary" textAlign="center">
-        {playerTurn}
-      </Text>
-      <Container />
-    </Container>
+    </GameRoomSection>
   );
 };
 

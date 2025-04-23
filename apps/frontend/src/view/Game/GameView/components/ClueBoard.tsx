@@ -1,6 +1,7 @@
 import { useAppContext } from '@appContext';
 import Container from '../../../../components/Container';
 import BoardTile from './BoardTile';
+import { memo } from 'react';
 
 const ClueBoard = () => {
   const { gameRoom } = useAppContext();
@@ -33,4 +34,4 @@ const ClueBoard = () => {
   );
 };
 
-export default ClueBoard;
+export default memo(ClueBoard);

@@ -25,9 +25,14 @@ def remove_player_from_room(room_id: str, target_player_id: str) -> bool:
     if not target_player:
         return False
 
+    is_host_quitting = target_player.is_host
+
     room.players = [p for p in room.players if p.id != target_player_id]
 
-    room.activities.append(
+    if is_host_quitting:
+        room.players[0].is_host = True
+
+    room.waiting_room_activities.append(
         Activity(player_name=target_player.name, message=PlayerActivity.LEFT)
     )
 

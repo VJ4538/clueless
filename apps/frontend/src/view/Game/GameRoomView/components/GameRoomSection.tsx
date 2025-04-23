@@ -5,6 +5,7 @@ interface GameRoomSectionProps {
   title?: string;
   maxHeight?: string;
   minHeight?: string;
+  p?: number;
 }
 
 const GameRoomSection = ({
@@ -12,6 +13,7 @@ const GameRoomSection = ({
   title,
   minHeight,
   maxHeight = '300px',
+  p = 2,
 }: GameRoomSectionProps) => {
   return (
     <Container width="100%">
@@ -24,7 +26,7 @@ const GameRoomSection = ({
       <Container
         border={1}
         borderRadius={1}
-        p={2}
+        p={p}
         overflow="auto"
         minHeight={minHeight}
         maxHeight={maxHeight}

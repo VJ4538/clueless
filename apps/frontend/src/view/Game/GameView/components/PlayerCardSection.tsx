@@ -13,13 +13,15 @@ const PlayerCard = () => {
   const currentPlayerCards = playerCards?.cards.slice(0, 4);
 
   return (
-    <GameRoomSection title="Your Cards:">
+    <GameRoomSection title="🧩 Your Cards">
       <Container display="flex" gap={1}>
         {currentPlayerCards?.map((card: any) => (
           <Container key={card?.id} border={1} borderRadius={1} minWidth={100}>
             <Container width="100%" bgcolor="primary.main">
               <Text textAlign="center" p={0.5} color="#fff">
-                {card.type}
+                {card.type === 'suspect' && '🕵️‍♀️'}
+                {card.type === 'weapon' && '🔪'}
+                {card.type === 'room' && '🏠'} {card.type}
               </Text>
             </Container>
 

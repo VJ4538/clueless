@@ -1,5 +1,5 @@
-import { Button, Container } from '@components';
-import { TextField } from '@mui/material';
+import { Button } from '@components';
+import { TextField, Stack } from '@mui/material';
 import useLoginPage from '../hook/useLoginPage';
 import { useAppContext } from '../../../context/appContext';
 
@@ -10,11 +10,12 @@ const JoinRoomInput = () => {
   const { handleJoinRoom } = useLoginPage();
 
   return (
-    <Container display="flex" justifyContent="center" alignItems="center">
+    <Stack direction="row" spacing={1} mb={3}>
       <TextField
         fullWidth
         size="small"
-        placeholder="Enter room id"
+        variant="outlined"
+        placeholder="Enter Room Code"
         value={userInputGameRoomId}
         onChange={handleUpdateUserInputGameRoomId}
       />
@@ -27,7 +28,7 @@ const JoinRoomInput = () => {
       >
         Join
       </Button>
-    </Container>
+    </Stack>
   );
 };
 

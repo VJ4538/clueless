@@ -109,7 +109,7 @@ const PlayerActions = () => {
 
   return (
     <>
-      <GameRoomSection title="Player Actions:">
+      <GameRoomSection title="🎮  Player Actions">
         {!isCurrenPlayerTurn && !isEliminated && (
           <Text p={1} color="info">
             Waiting for {gameRoom?.current_turn}'s turn

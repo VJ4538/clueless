@@ -1,22 +1,32 @@
 import { Container } from '@components';
 import { Outlet } from 'react-router-dom';
-import NavBar from './NavBar';
+import { useAppContext } from '@appContext';
+import SpecialCodeListener from '../Game/SpecialCodeListener';
+import LearnMoreAboutGame from '../Home/components/LearnMoreAboutGame';
+import { memo } from 'react';
+import DebugMode from './DebugMode';
 
 const Layout = () => {
+  const { debugMode, toggleDebugMode } = useAppContext();
+
   return (
     <Container
+      display="flex"
       width="100vw"
       height="100vh"
-      display="flex"
       justifyContent="center"
       alignItems="center"
     >
-      <NavBar />
-      <Container border={1} borderRadius={1} minWidth={400}>
-        <Outlet />
+      <Container>
+        {debugMode && <DebugMode />}
+        <Container border={1} borderRadius={1} minWidth={500}>
+          <Outlet />
+        </Container>
+        <LearnMoreAboutGame />
       </Container>
+      <SpecialCodeListener onTrigger={toggleDebugMode} />
     </Container>
   );
 };
 
-export default Layout;
+export default memo(Layout);

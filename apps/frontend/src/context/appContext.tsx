@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useMemo } from 'react';
 import { User } from '@helpers';
 
 interface AppContextData {
+  debugMode: boolean;
+  toggleDebugMode: () => void;
   user: User | null;
   setUser: (user: User) => void;
   userInputGameRoomId: string;
@@ -21,6 +23,7 @@ export default function AppContextProvider({
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState<User | null>(null);
+  const [debugMode, setDebugMode] = useState(true);
   const [userInputGameRoomId, setUserInputGameRoomId] = useState('');
   const [gameRoom, setGameRoom] = useState<any>(null);
   const [ws, setWs] = useState<any>(null);
@@ -29,8 +32,14 @@ export default function AppContextProvider({
     setUserInputGameRoomId(e.target.value);
   };
 
+  const toggleDebugMode = () => {
+    setDebugMode(prev => !prev);
+  };
+
   const values = useMemo(
     () => ({
+      debugMode,
+      toggleDebugMode,
       user,
       setUser,
       userInputGameRoomId,
@@ -41,7 +50,7 @@ export default function AppContextProvider({
       ws,
       setWs,
     }),
-    [gameRoom, userInputGameRoomId, user]
+    [gameRoom, userInputGameRoomId, user, debugMode, toggleDebugMode]
   );
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;

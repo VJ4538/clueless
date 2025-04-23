@@ -14,11 +14,9 @@ const authRoutes = [{ path: '/', element: <Login /> }];
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
   const { roomId } = useParams();
 
-  // TODO: API call to check if the game room is valid
   const isAuthenticated = Boolean(roomId);
 
   if (!isAuthenticated) {
-    // TODO: Add page for Error
     console.log('Not authenticated');
   }
 

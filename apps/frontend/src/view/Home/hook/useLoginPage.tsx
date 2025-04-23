@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../../context/appContext';
 import { client } from '@helpers';
 import { storeTempUserData } from '@helpers';
+import { toast } from 'react-toastify';
 
 const useLoginPage = () => {
   const { userInputGameRoomId, setUserInputGameRoomId } = useAppContext();
@@ -69,6 +70,7 @@ const useLoginPage = () => {
 
       navigate(`/room/${room?.id}`);
     } catch (error) {
+      toast.error('Room does not exist');
       console.error('Error joining new room', error);
     }
   };

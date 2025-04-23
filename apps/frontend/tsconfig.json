@@ -26,6 +26,6 @@
       "@appContext":["./src/context/appContext.tsx"]
     },
   },
-  "include": ["src"],
+  "include": ["src", "src/components/.tsx"],
   "references": []
 }
