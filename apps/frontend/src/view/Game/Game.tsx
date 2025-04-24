@@ -2,6 +2,7 @@ import { useAppContext } from '@appContext';
 import GameRoomWebSocketHandler from './GameRoomWebSocketHandler';
 import GameRoom from './GameRoomView/GameRoom';
 import GameView from './GameView/GameView';
+import GameAuthWrapper from './GameAuthWrapper';
 
 const Game = () => {
   const { gameRoom } = useAppContext();
@@ -11,9 +12,11 @@ const Game = () => {
     gameRoom?.game_state === 'FINISHED';
 
   return (
-    <GameRoomWebSocketHandler>
-      {isGameInProgress ? <GameView /> : <GameRoom />}
-    </GameRoomWebSocketHandler>
+    <GameAuthWrapper>
+      <GameRoomWebSocketHandler>
+        {isGameInProgress ? <GameView /> : <GameRoom />}
+      </GameRoomWebSocketHandler>
+    </GameAuthWrapper>
   );
 };
 

@@ -22,6 +22,7 @@ class GameRoom(BaseModel):
     )
     waiting_room_activities: List[Activity] = Field(default_factory=list)
     game_activities: List[Activity] = Field(default_factory=list)
+    revealved_cards: List[Dict] = Field(default_factory=list)
     config: Dict[str, Any] = Field(default_factory=get_game_config)
 
     @classmethod

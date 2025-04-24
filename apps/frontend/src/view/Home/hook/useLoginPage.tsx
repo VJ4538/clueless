@@ -59,18 +59,17 @@ const useLoginPage = () => {
         game_id: userInputGameRoomId,
       });
 
-      if (apiResponse?.message == 'Room is full') {
-        alert(apiResponse?.message);
-        return;
+      if (apiResponse.message !== 'Joined Room') {
+        throw Error(apiResponse.message);
       }
 
       const room = apiResponse?.room;
 
-      setTempUser(apiResponse?.user, room.id);
+      setTempUser(apiResponse?.user, room?.id);
 
       navigate(`/room/${room?.id}`);
     } catch (error) {
-      toast.error('Room does not exist');
+      toast.error(`${error}`);
       console.error('Error joining new room', error);
     }
   };

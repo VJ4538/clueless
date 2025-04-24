@@ -11,17 +11,21 @@ const Layout = () => {
 
   return (
     <Container
-      display="flex"
       width="100vw"
       height="100vh"
+      display="flex"
       justifyContent="center"
       alignItems="center"
     >
-      <Container>
+      <Container
+        p={1}
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
         {debugMode && <DebugMode />}
-        <Container border={1} borderRadius={1} minWidth={500}>
-          <Outlet />
-        </Container>
+        <Outlet />
         <LearnMoreAboutGame />
       </Container>
       <SpecialCodeListener onTrigger={toggleDebugMode} />

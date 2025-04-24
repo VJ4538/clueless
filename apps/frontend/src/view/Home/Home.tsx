@@ -11,6 +11,7 @@ export const gameContainerStyle = {
   bgcolor: '#f5f5f5',
   border: '1px solid #ccc',
   minWidth: '600px',
+  maxWidth: '600px',
 };
 
 const Home = () => {

@@ -2,6 +2,12 @@ import { memo } from 'react';
 import Container from '../../../../components/Container';
 import Text from '../../../../components/Text';
 import { nanoid } from 'nanoid';
+import { Tooltip } from '@mui/material';
+import PlayersOnTile from './PlayersOnTile';
+import {
+  entryTilePositionMapping,
+  hallwayTilePositionMapping,
+} from './boardConst';
 
 interface Props {
   id: string;
@@ -11,84 +17,69 @@ interface Props {
   secretPassageTo?: string;
 }
 
-const entryTitlePositionMapping: any = {
-  'entry-1': {
-    alignSelf: 'end',
-    justifySelf: 'end',
-  },
-  'entry-2': {
-    alignSelf: 'end',
-    justifySelf: 'end',
-  },
-  'entry-3': {
-    alignSelf: 'start',
-    justifySelf: 'end',
-  },
-  'entry-5': {
-    alignSelf: 'start',
-    justifySelf: 'end',
-  },
-  'entry-8': {
-    alignSelf: 'start',
-    justifySelf: 'end',
-  },
-};
+const verticalHallwayId = [
+  'hallway-3',
+  'hallway-4',
+  'hallway-5',
+  'hallway-8',
+  'hallway-9',
+  'hallway-10',
+];
 
 const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
-  const size = type === 'entry' || type === 'empty' ? '90px' : '130px';
-  const finalSx = type === 'entry' ? entryTitlePositionMapping[id] : {};
+  const placementSx =
+    type === 'entry'
+      ? { ...entryTilePositionMapping[id], width: '80px', height: '80px' }
+      : hallwayTilePositionMapping[id];
 
   return (
     <Container
       key={nanoid()}
-      width={size}
-      height={size}
-      bgcolor={type === 'room' ? '#E9E3E0' : '#FFFFFF'}
+      width="150px"
+      height="150px"
       display="flex"
-      justifyContent="center"
+      flexDirection="column"
+      justifyContent={type === 'hallway' ? 'center' : 'space-between'}
       alignItems="center"
+      position="relative"
+      bgcolor={type === 'room' ? '#E9E3E0' : '#f5f5f5'}
       border={type === 'empty' ? 0 : 1}
-      sx={finalSx}
+      p={0.2}
+      sx={{
+        ...placementSx,
+        ...(type === 'hallway' && {
+          height: verticalHallwayId.includes(id) ? '100%' : '80px',
+          width: verticalHallwayId.includes(id) ? '80px' : '100%',
+          margin: 'auto',
+        }),
+      }}
     >
-      <Container key={nanoid()}>
-        <Container alignSelf="start">
-          <Text fontWeight={600} textAlign="center">
-            {label}
-            {type === 'entry' && id}
-          </Text>
+      <Text fontWeight={700} fontSize={12}>
+        {label}
+        {type === 'entry' && id}
+      </Text>
+
+      <Tooltip
+        arrow
+        title={
+          ['hallway', 'room'].includes(type) && (
+            <Container p={1} minWidth="150px">
+              <Text mb={1}>Players Detail</Text>
+              <PlayersOnTile tileId={id} players={players} toolTip />
+            </Container>
+          )
+        }
+      >
+        <Container>
+          <PlayersOnTile tileId={id} players={players} />
         </Container>
+      </Tooltip>
 
-        {players.map(
-          (player: any) =>
-            player.current_location === id && (
-              <Container
-                key={nanoid()}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                gap={0.25}
-              >
-                <Container
-                  sx={{
-                    height: '10px',
-                    width: '10px',
-                    minWidth: '10px',
-                    borderRadius: '50%',
-                    border: '1px solid #000',
-                    background: player?.character.color?.toLowerCase(),
-                  }}
-                />
-                <Text fontSize={12}>{player?.character.name}</Text>
-              </Container>
-            )
-        )}
-
-        {secretPassageTo && (
-          <Text variant="caption" color="primary" textAlign="center">
-            Shortcut {secretPassageTo}
-          </Text>
-        )}
-      </Container>
+      {secretPassageTo && (
+        <Text variant="caption" textAlign="center">
+          🌀 Secret Portal ({secretPassageTo})
+        </Text>
+      )}
     </Container>
   );
 };

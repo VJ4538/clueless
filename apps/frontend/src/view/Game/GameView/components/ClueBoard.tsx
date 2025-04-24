@@ -12,11 +12,10 @@ const ClueBoard = () => {
 
   return (
     <Container
-      style={{
+      sx={{
         display: 'grid',
         gridTemplateColumns: `repeat(${boardSize}, 1fr)`,
         gridTemplateRows: `repeat(${boardSize}, 1fr)`,
-        width: '100%',
       }}
     >
       {gameBoard &&

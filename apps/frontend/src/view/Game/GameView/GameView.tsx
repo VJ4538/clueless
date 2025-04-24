@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, Container } from '@components';
 import { useAppContext } from '@appContext';
-import PlayerTurnSection from './components/PlayerTurn';
+import GameInfo from './components/GameInfo';
 import GameRoomMessages from '../GameRoomView/components/GameRoomMessages';
 import ClueBoard from './components/ClueBoard';
-import PlayerCard from './components/PlayerCardSection';
 import PlayerActions from './components/PlayerActions';
+import CardsSection from './components/CardsSection';
+import { Paper } from '@mui/material';
 
 const GameView: React.FC = () => {
   const { debugMode, gameRoom } = useAppContext();
@@ -15,19 +16,24 @@ const GameView: React.FC = () => {
   }
 
   return (
-    <Container display="flex" width="100%">
-      <Container p={2} minWidth="700px">
-        <ClueBoard />
-      </Container>
+    <Paper
+      sx={{
+        display: 'flex',
+        bgcolor: '#f5f5f5',
+        border: '1px solid #ccc',
+      }}
+    >
+      <ClueBoard />
 
       <Container
         display="flex"
         flexDirection="column"
         justifyContent="start"
-        maxWidth="500px"
         height="100%"
+        width="700px"
         gap={2}
         p={2}
+        pr={6}
       >
         {debugMode && (
           <Container>
@@ -42,18 +48,21 @@ const GameView: React.FC = () => {
           </Container>
         )}
 
-        <PlayerTurnSection />
+        <GameInfo />
 
         <GameRoomMessages
           messages={gameRoom?.game_activities}
-          minHeight="130px"
+          maxHeight="200px"
+          minHeight="200px"
         />
 
-        <PlayerCard />
+        <CardsSection isRevealedCards />
+
+        <CardsSection />
 
         <PlayerActions />
       </Container>
-    </Container>
+    </Paper>
   );
 };
 

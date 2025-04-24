@@ -1,5 +1,5 @@
 from typing import Any
-from fastapi import APIRouter
+from fastapi import APIRouter, Header
 from loguru import logger
 from models.game_room import GameRoom
 from models.activity import Activity
@@ -22,19 +22,26 @@ def join_game_room(payload: dict):
         # Get the current room state
         current_room = active_game_rooms[game_id]
 
-        if len(current_room.players) == 4:
+        if len(current_room.players) == 6:
             return {"message": "Room is full"}
+
+        if current_room.game_state == GameStatus.FINISHED:
+            return {"message": "Game Ended"}
+
+        if current_room.game_state == GameStatus.IN_PROGRESS:
+            return {"message": "Unable to Join"}
 
         # Add temp player
         temp_player = generate_temp_user(is_host=False)
         current_room.players.append(temp_player)
 
         # Update activities
-        current_room.waiting_room_activities.append(
+        current_room.waiting_room_activities.insert(
+            0,
             Activity(
                 player_name=temp_player.name,
                 message=PlayerActivity.JOIN,
-            )
+            ),
         )
 
         # Update room
@@ -83,4 +90,30 @@ def create_game_room():
         }
     except Exception as e:
         logger.error(f"Error in create_game_room: {e}")
+        return {"error": str(e)}
+
+
+@router.get("/status")
+def check_if_room_exist(room_id: str, authorization: str = Header(...)):
+    try:
+        response = {"message": "Game room status checked", "is_valid_room": False}
+
+        print("auth", authorization)
+
+        user_id = authorization
+
+        game_room = active_game_rooms.get(room_id)
+
+        if not game_room:
+            return response
+
+        player_in_room = any(player.id == user_id for player in game_room.players)
+        is_active = game_room.game_state != GameStatus.FINISHED
+
+        response["is_valid_room"] = player_in_room & is_active
+
+        return response
+
+    except Exception as e:
+        logger.error(f"Error in check room status: {e}")
         return {"error": str(e)}

@@ -101,6 +101,12 @@ const PlayerActions = () => {
 
   const disableSuggestion =
     !isCurrenPlayerTurn || currentInGamePlayer?.has_suggested;
+
+  // Not in hallway or entry
+  const isPlayerInHallwayOrEntry =
+    currentInGamePlayer?.current_location.includes('hallway') ||
+    currentInGamePlayer?.current_location.includes('entry');
+
   const disableAccusation =
     !isCurrenPlayerTurn || currentInGamePlayer?.has_accused;
 
@@ -110,32 +116,22 @@ const PlayerActions = () => {
   return (
     <>
       <GameRoomSection title="🎮  Player Actions">
-        {!isCurrenPlayerTurn && !isEliminated && (
-          <Text p={1} color="info">
-            Waiting for {gameRoom?.current_turn}'s turn
-          </Text>
-        )}
-
-        {currentInGamePlayer?.is_eliminated && (
-          <Text p={1} color="error">
-            You have been eliminated
-          </Text>
-        )}
-
         <Container display="flex" gap={2}>
           <Button
             onClick={openModal('movement')}
             variant="contained"
             disabled={isEliminated || disableMove}
           >
-            Make a move
+            Move
           </Button>
           <Button
             onClick={openModal('suggestion')}
             variant="contained"
-            disabled={isEliminated || disableSuggestion}
+            disabled={
+              isEliminated || disableSuggestion || isPlayerInHallwayOrEntry
+            }
           >
-            Make a suggestion
+            Suggest
           </Button>
 
           <Button
@@ -143,8 +139,9 @@ const PlayerActions = () => {
             variant="contained"
             disabled={isEliminated || disableAccusation}
           >
-            Make accusation
+            Accusate
           </Button>
+
           <Button
             onClick={sendEndTurnMessage}
             variant="contained"
@@ -163,6 +160,22 @@ const PlayerActions = () => {
             >
               Game Ended: Exit Game
             </Button>
+          )}
+        </Container>
+
+        <Container p={1}>
+          {!isCurrenPlayerTurn && !isEliminated && (
+            <Text color="info" fontWeight="bold">
+              Waiting for {gameRoom?.current_turn} to move
+            </Text>
+          )}
+
+          {currentInGamePlayer?.is_eliminated && (
+            <Text color="error">You have been eliminated</Text>
+          )}
+
+          {isCurrenPlayerTurn && isPlayerInHallwayOrEntry && (
+            <Text>You must be in a room to make suggestion</Text>
           )}
         </Container>
       </GameRoomSection>
