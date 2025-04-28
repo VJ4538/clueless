@@ -15,6 +15,7 @@ interface Props {
   players: any;
   label?: string;
   secretPassageTo?: string;
+  backgroundImage?: string;
 }
 
 const verticalHallwayId = [
@@ -26,7 +27,7 @@ const verticalHallwayId = [
   'hallway-10',
 ];
 
-const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
+const BoardTile = ({ id, type, label, secretPassageTo, backgroundImage, players }: Props) => {
   const placementSx =
     type === 'entry'
       ? { ...entryTilePositionMapping[id], width: '80px', height: '80px' }
@@ -52,9 +53,18 @@ const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
           width: verticalHallwayId.includes(id) ? '80px' : '100%',
           margin: 'auto',
         }),
+        ...(type === 'room' && {border: '6px inset white'}),
+        ...(backgroundImage && {
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }),
       }}
     >
-      <Text fontWeight={700} fontSize={12}>
+      <Text fontWeight={700} fontSize={type==='room'?16:12} color={type==='room'||type==='hallway'?'white':'black'}
+        sx={{
+          ...(type==='room'&&{marginTop:'15%'})
+      }}>
         {label}
         {type === 'entry' && id}
       </Text>
@@ -76,7 +86,7 @@ const BoardTile = ({ id, type, label, secretPassageTo, players }: Props) => {
       </Tooltip>
 
       {secretPassageTo && (
-        <Text variant="caption" textAlign="center">
+        <Text variant="caption" textAlign="center" color={'white'}>
           🌀 Secret Portal ({secretPassageTo})
         </Text>
       )}
