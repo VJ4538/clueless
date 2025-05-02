@@ -27,6 +27,13 @@ const ClueBoard = () => {
             label={label}
             players={players}
             secretPassageTo={secretPassageTo}
+            backgroundImage={
+              type === 'room'
+                ? `/images/${label.replace(/\s/g, '')}.png`
+                : type === 'hallway'
+                ? `/images/Hallway.png`
+                : undefined
+            }
           />
         ))}
     </Container>

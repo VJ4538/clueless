@@ -11,7 +11,6 @@ init_logging()
 
 # App initialization
 logger.info("Starting App...")
-
 app = FastAPI(
     title="Clueless Backend Service",
     version="0.1",
